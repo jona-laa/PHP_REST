@@ -1,6 +1,6 @@
 <?php
 // include database and object files
-include_once './config/database.php';
+include_once './db/database.php';
 include_once './classes/course.php';
 
 // required headers
@@ -14,7 +14,7 @@ if(isset($_GET['id'])) {
 }
 
 
-// instantiate database and product object
+// instantiate database and course object
 $database = new Database();
 $db = $database->getConnection();
 
@@ -28,21 +28,22 @@ switch($req_method) {
     
     // GET
     case 'GET':
-        // query products
+        // query courses
         if(isset($id)) {
-            $stmt = $course->readOne($id);
+            $result = $course->readOne($id);
         } else {
-            $stmt = $course->read();
+            $result = $course->read();
         }
-        $num = $stmt->rowCount();
+        
+        $rows = $result->rowCount();
           
         // check if more than 0 record found
-        if($num>0){
+        if($rows>0){
         
             $courses_arr=array();
             $courses_arr["records"]=array();
         
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)){
                 extract($row);
           
                 $course_item=array(
@@ -100,7 +101,7 @@ switch($req_method) {
             http_response_code(400);
         
             // tell the user
-            echo json_encode(array("message" => "Unable to create product. Data is incomplete."));
+            echo json_encode(array("message" => "Unable to create course. Data is incomplete."));
         }
         break;
     
@@ -134,14 +135,14 @@ switch($req_method) {
     case 'PUT':
         $data = json_decode(file_get_contents("php://input"));
 
-        // set ID property of product to be edited
-        $product->id = $data->id;
+        // set ID property of course to be edited
+        $course->id = $data->id;
         
-        // set product property values
-        $product->code = $data->code;
-        $product->name = $data->name;
-        $product->progression = $data->progression;
-        $product->link = $data->link;
+        // set course property values
+        $course->code = $data->code;
+        $course->name = $data->name;
+        $course->progression = $data->progression;
+        $course->link = $data->link;
 
         if($course->update()) {
             http_response_code(200);

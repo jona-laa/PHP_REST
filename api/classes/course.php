@@ -21,12 +21,12 @@ class Course{
         $query = "SELECT id, code, name, progression, link FROM $this->table_name";
     
         // prepare query statement
-        $stmt = $this->conn->prepare($query);
+        $result = $this->conn->prepare($query);
     
         // execute query
-        $stmt->execute();
+        $result->execute();
     
-        return $stmt;
+        return $result;
     }
 
     // read one course
@@ -34,12 +34,12 @@ class Course{
         $query = "SELECT id, code, name, progression, link FROM $this->table_name WHERE id=$id";
         
         // prepare query statement
-        $stmt = $this->conn->prepare($query);
+        $result = $this->conn->prepare($query);
     
         // execute query
-        $stmt->execute();
+        $result->execute();
     
-        return $stmt;
+        return $result;
     }
 
     // create new course
@@ -49,7 +49,7 @@ class Course{
                 code=:code, name=:name, progression=:progression, link=:link";
   
         // prepare query
-        $stmt = $this->conn->prepare($query);
+        $result = $this->conn->prepare($query);
     
         // sanitize
         $this->code=htmlspecialchars(strip_tags($this->code));
@@ -58,31 +58,31 @@ class Course{
         $this->link=htmlspecialchars(strip_tags($this->link));
     
         // bind values
-        $stmt->bindParam(":code", $this->code);
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":progression", $this->progression);
-        $stmt->bindParam(":link", $this->link);
+        $result->bindParam(":code", $this->code);
+        $result->bindParam(":name", $this->name);
+        $result->bindParam(":progression", $this->progression);
+        $result->bindParam(":link", $this->link);
     
         // execute query
-        if($stmt->execute()){
+        if($result->execute()){
             return true;
         }
     
         return false;
     }
 
-    // delete course
+    // delete course 
     function delete($id) {
         // select all query
         $query = "DELETE FROM $this->table_name WHERE id=$id";
         
         // prepare query statement
-        $stmt = $this->conn->prepare($query);
+        $result = $this->conn->prepare($query);
     
         // execute query
-        $stmt->execute();
+        $result->execute();
     
-        return $stmt;
+        return $result;
     }
 
     function update() {
@@ -97,7 +97,7 @@ class Course{
                     id = :id";
     
         // prepare query statement
-        $stmt = $this->conn->prepare($query);
+        $result = $this->conn->prepare($query);
     
         // sanitize
         $this->code=htmlspecialchars(strip_tags($this->code));
@@ -106,13 +106,14 @@ class Course{
         $this->link=htmlspecialchars(strip_tags($this->link));
     
         // bind new values
-        $stmt->bindParam(':code', $this->code);
-        $stmt->bindParam(':name', $this->name);
-        $stmt->bindParam(':progression', $this->progression);
-        $stmt->bindParam(':link', $this->link);
+        $result->bindParam(':code', $this->code);
+        $result->bindParam(':name', $this->name);
+        $result->bindParam(':progression', $this->progression);
+        $result->bindParam(':link', $this->link);
+        $result->bindParam(':id', $this->id);
     
         // execute the query
-        if($stmt->execute()){
+        if($result->execute()){
             return true;
         }
     

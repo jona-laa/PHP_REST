@@ -1,11 +1,12 @@
 <?php
+include('config.php');
 class Database{
   
     // specify your own database credentials
-    private $host = "localhost";
-    private $db_name = "demo_rest";
-    private $username = "demo_rest";
-    private $password = "rest";
+    private $host = DBHOST;
+    private $db_name = DBNAME;
+    private $username = DBUSER;
+    private $password = DBPWD;
     public $conn;
   
     // get the database connection
