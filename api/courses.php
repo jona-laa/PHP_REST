@@ -6,6 +6,8 @@ include_once './classes/course.php';
 // required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
+header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
+header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-Requested-With');
   
 $req_method = $_SERVER['REQUEST_METHOD'];
 
@@ -41,7 +43,7 @@ switch($req_method) {
         if($rows>0){
         
             $courses_arr=array();
-            $courses_arr["records"]=array();
+            $courses_arr["courses"]=array();
         
             while ($row = $result->fetch(PDO::FETCH_ASSOC)){
                 extract($row);
@@ -51,10 +53,12 @@ switch($req_method) {
                     "code" => $code,
                     "name" => $name,
                     "progression" => $progression,
-                    "link" => $link
+                    "link" => $link,
+                    "credits" => $credits,
+                    "icon" => $icon
                 );
           
-                array_push($courses_arr["records"], $course_item);
+                array_push($courses_arr["courses"], $course_item);
             }
 
             http_response_code(200);
@@ -78,12 +82,16 @@ switch($req_method) {
             !empty($data->code) &&
             !empty($data->name) &&
             !empty($data->progression) &&
-            !empty($data->link)
+            !empty($data->link) &&
+            !empty($data->credits) &&
+            !empty($data->icon)
         ){
             $course->code = $data->code;
             $course->name = $data->name;
             $course->progression = $data->progression;
             $course->link = $data->link;
+            $course->credits = $data->credits;
+            $course->icon = $data->icon;
     
             if($course->create()) {
                 http_response_code(201);
@@ -143,6 +151,8 @@ switch($req_method) {
         $course->name = $data->name;
         $course->progression = $data->progression;
         $course->link = $data->link;
+        $course->credits = $data->credits;
+        $course->icon = $data->icon;
 
         if($course->update()) {
             http_response_code(200);
