@@ -83,8 +83,8 @@ switch($req_method) {
             !empty($data->name) &&
             !empty($data->progression) &&
             !empty($data->link) &&
-            !empty($data->credits) &&
-            !empty($data->icon)
+            !empty($data->credits) 
+            // !empty($data->icon)
         ){
             $course->code = $data->code;
             $course->name = $data->name;
@@ -96,12 +96,12 @@ switch($req_method) {
             if($course->create()) {
                 http_response_code(201);
                     echo json_encode(
-                    array("message" => "New course created")
+                    array("code" => 201, "message" => "New course created")
                 );
             } else {
                 http_response_code(503);
                 echo json_encode(
-                    array("message" => "Sever error. Try again.")
+                    array("message" => "Something went wrong. Try again.")
                 );
             }
         } else{
@@ -109,7 +109,7 @@ switch($req_method) {
             http_response_code(400);
         
             // tell the user
-            echo json_encode(array("message" => "Unable to create course. Data is incomplete."));
+            echo json_encode(array("code" => 400, "message" => "Unable to create course. Data is incomplete."));
         }
         break;
     
