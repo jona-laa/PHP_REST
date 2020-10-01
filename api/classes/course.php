@@ -102,8 +102,8 @@ class Course{
                     code = :code,
                     name = :name,
                     progression = :progression,
-                    link = :link
-                    credits = :credits
+                    link = :link,
+                    credits = :credits,
                     icon = :icon
                 WHERE
                     id = :id";
