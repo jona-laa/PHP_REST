@@ -6,6 +6,7 @@ class Course{
     private $table_name = "courses";
   
     // object properties
+    public $id;
     public $code;
     public $name;
     public $progression;
@@ -52,7 +53,7 @@ class Course{
                 code=:code, name=:name, progression=:progression, link=:link, credits=:credits, icon=:icon";
   
         // prepare query
-        $result = $this->conn->prepare($query);
+        $statement = $this->conn->prepare($query);
     
         // sanitize
         $this->code=htmlspecialchars(strip_tags($this->code));
@@ -63,16 +64,16 @@ class Course{
         $this->icon=htmlspecialchars(strip_tags($this->icon));
     
         // bind values
-        $result->bindParam(":code", $this->code);
-        $result->bindParam(":name", $this->name);
-        $result->bindParam(":progression", $this->progression);
-        $result->bindParam(":link", $this->link);
-        $result->bindParam(":credits", $this->credits);
-        $result->bindParam(":icon", $this->icon);
+        $statement->bindParam(":code", $this->code);
+        $statement->bindParam(":name", $this->name);
+        $statement->bindParam(":progression", $this->progression);
+        $statement->bindParam(":link", $this->link);
+        $statement->bindParam(":credits", $this->credits);
+        $statement->bindParam(":icon", $this->icon);
 
     
         // execute query
-        if($result->execute()){
+        if($statement->execute()){
             return true;
         }
     
@@ -95,7 +96,8 @@ class Course{
 
     function update() {
          // update query
-        $query = "UPDATE $this->table_name
+        $query = "UPDATE 
+            $this->table_name
                 SET
                     code = :code,
                     name = :name,
@@ -107,7 +109,7 @@ class Course{
                     id = :id";
     
         // prepare query statement
-        $result = $this->conn->prepare($query);
+        $statement = $this->conn->prepare($query);
     
         // sanitize
         $this->code=htmlspecialchars(strip_tags($this->code));
@@ -116,19 +118,20 @@ class Course{
         $this->link=htmlspecialchars(strip_tags($this->link));
         $this->credits=htmlspecialchars(strip_tags($this->credits));
         $this->icon=htmlspecialchars(strip_tags($this->icon));
+        $this->id=htmlspecialchars(strip_tags($this->id));
 
     
         // bind new values
-        $result->bindParam(':code', $this->code);
-        $result->bindParam(':name', $this->name);
-        $result->bindParam(':progression', $this->progression);
-        $result->bindParam(':link', $this->link);
-        $result->bindParam(':credits', $this->credits);
-        $result->bindParam(':icon', $this->icon);
-        $result->bindParam(':id', $this->id);
+        $statement->bindParam(':code', $this->code);
+        $statement->bindParam(':name', $this->name);
+        $statement->bindParam(':progression', $this->progression);
+        $statement->bindParam(':link', $this->link);
+        $statement->bindParam(':credits', $this->credits);
+        $statement->bindParam(':icon', $this->icon);
+        $statement->bindParam(':id', $this->id);
     
         // execute the query
-        if($result->execute()){
+        if($statement->execute()){
             return true;
         }
     
