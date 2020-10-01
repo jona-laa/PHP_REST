@@ -67,7 +67,7 @@ switch($req_method) {
         } else {
             http_response_code(404);
             echo json_encode(
-                array("message" => "No courses found.")
+                array("code" => 404, "message" => "No courses found.")
             );
         }
         break;
@@ -101,7 +101,7 @@ switch($req_method) {
             } else {
                 http_response_code(503);
                 echo json_encode(
-                    array("message" => "Something went wrong. Try again.")
+                    array("code" => 503, "message" => "Something went wrong. Try again.")
                 );
             }
         } else{
@@ -120,18 +120,18 @@ switch($req_method) {
         if(!isset($id)) {
             http_response_code(510);
             echo json_encode(
-                array("message" => "No id was sent")
+                array("code" => 510, "message" => "No id was sent")
             );
         } else {
             if($course->delete($id)) {
                 http_response_code(200);
                 echo json_encode(
-                    array("message" => "Course deleted")
+                    array("code" => 200, "message" => "Course deleted")
                 );
             } else {
                 http_response_code(503);
                 echo json_encode(
-                    array("message" => "Sever error. Try again.")
+                    array("code" => 503, "message" => "Sever error. Try again.")
                 );
             }
         }
@@ -157,12 +157,12 @@ switch($req_method) {
         if($course->update()) {
             http_response_code(200);
             echo json_encode(
-                array("message" => "Course updated")
+                array("code" => 200, "message" => "Course updated")
             );
         } else {
             http_response_code(503);
             echo json_encode(
-                array("message" => "Sever error. Try again.")
+                array("code" => 503, "message" => "Sever error. Try again.")
             );           
         }
         break;
