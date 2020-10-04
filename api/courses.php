@@ -1,9 +1,7 @@
 <?php
-// include database and object files
 include_once './db/database.php';
 include_once './classes/course.php';
 
-// required headers
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE');
@@ -11,26 +9,30 @@ header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type
   
 $req_method = $_SERVER['REQUEST_METHOD'];
 
+
+
+// Get value of query parameter id
 if(isset($_GET['id'])) {
     $id = $_GET['id'];
 }
 
 
-// instantiate database and course object
+
+// Instantiate DB and Course
 $database = new Database();
 $db = $database->getConnection();
-
-// initialize object
 $course = new Course($db);
 
 
 
-// Endpoints
+/* API Endpoints
+  * @param     {string}     $req_method     Request methos
+*/
 switch($req_method) {
     
     // GET
     case 'GET':
-        // query courses
+        // Get all or One Course?
         if(isset($id)) {
             $result = $course->readOne($id);
         } else {
@@ -39,7 +41,7 @@ switch($req_method) {
         
         $rows = $result->rowCount();
           
-        // check if more than 0 record found
+        // If any courses found, Return JSON object
         if($rows>0){
         
             $courses_arr=array();
@@ -78,14 +80,15 @@ switch($req_method) {
     case 'POST':
         $data = json_decode(file_get_contents("php://input"));
 
+        // Deny req if empty input
         if(
             !empty($data->code) &&
             !empty($data->name) &&
             !empty($data->progression) &&
             !empty($data->link) &&
             !empty($data->credits) 
-            // !empty($data->icon)
         ){
+            // set course property values
             $course->code = $data->code;
             $course->name = $data->name;
             $course->progression = $data->progression;
@@ -105,10 +108,7 @@ switch($req_method) {
                 );
             }
         } else{
-            // set response code - 400 bad request
-            http_response_code(400);
-        
-            // tell the user
+            http_response_code(400);        
             echo json_encode(array("code" => 400, "message" => "Unable to create course. Data is incomplete."));
         }
         break;

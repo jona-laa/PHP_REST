@@ -4,6 +4,9 @@
 ### GET
 * URL: http://studenter.miun.se/~jola1803/dt173g/moment5/Server/courses.php
 
+### GET ONE 
+* URL: http://studenter.miun.se/~jola1803/dt173g/moment5/Server/courses.php?id=courseID
+
 ### POST 
 * URL: http://studenter.miun.se/~jola1803/dt173g/moment5/Server/courses.php
 * JSON 
